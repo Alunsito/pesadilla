@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.utils import timezone
 
@@ -9,15 +10,15 @@ class User(models.Model):
 
 class Table(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    table_id = models.IntegerField(max_length=5)
-    size_table = models.IntegerField(max_length=5)
+    table_id = models.IntegerField()
+    size_table = models.IntegerField()
     def __int__(self):
-        return self.table_id
+        return self.table_id,self.user
 
 class Booking(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     booking_date = models.DateTimeField('Booking date')
-    def __str__(self):
+    def __date__(self):
         return self.booking_date
     def was_booked_recently(self):
         return self.booking_date >= timezone.now() - datetime.timedelta(days=1)
